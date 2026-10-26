@@ -9,7 +9,7 @@
     <!-- PWA -->
     <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#6F4E37">
-    <link rel="apple-touch-icon" href="./icon.png">
+    <link rel="apple-touch-icon" href="./icon-192.png">
 
     <style>
         :root { 
@@ -718,6 +718,7 @@
         aplicarModoVista();
     }
 
+    // APLICAR MODO VISTA PASILLOS/ZONAS CORREGIDO Y ROBUSTO
     function aplicarModoVista() {
         const clasica = document.getElementById('vista-clasica');
         const pasillos = document.getElementById('vista-pasillos');
@@ -727,13 +728,19 @@
         if (sw) sw.checked = modoPasillos;
 
         if (modoPasillos) {
-            clasica.style.display = 'none';
-            pasillos.style.display = 'block';
-            tabs.style.display = 'none';
+            if (clasica) clasica.style.display = 'none';
+            if (tabs) tabs.style.display = 'none';
+            if (pasillos) {
+                pasillos.style.display = 'block';
+                const pantallaPasillos = pasillos.querySelector('.pantalla');
+                if (pantallaPasillos) {
+                    pantallaPasillos.style.display = 'grid';
+                }
+            }
         } else {
-            clasica.style.display = 'block';
-            pasillos.style.display = 'none';
-            tabs.style.display = 'flex';
+            if (clasica) clasica.style.display = 'block';
+            if (tabs) tabs.style.display = 'flex';
+            if (pasillos) pasillos.style.display = 'none';
         }
         actualizar();
     }
@@ -1183,7 +1190,6 @@
         }
     }
 
-    // FUNCIONES COPIAR Y VINCULAR CLAVE DISPOSITIVOS
     function copiarClaveUID() {
         const uid = localStorage.getItem('supermart_uid');
         if(uid) {
