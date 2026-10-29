@@ -1,6 +1,6 @@
-const CACHE_NAME = 'supermart-v2-8-0';
+const CACHE_NAME = 'supermart-v2-8-0-fix';
 
-// Solo recursos locales directos para garantizar instalación rápida sin fallos externos
+// Solo recursos locales directos para garantizar una instalación rápida sin fallos externos
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -40,7 +40,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Navegación (index.html): Intenta red primero para traer siempre lo último, si no hay internet usa caché
+  // Navegación (index.html): Intenta red primero para traer siempre lo último; si no hay internet, usa la copia guardada
   if (event.request.mode === 'navigate') {
     event.respondWith(
       fetch(event.request)
@@ -60,7 +60,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Resto de recursos: Busca en caché primero, si no está va a la red
+  // Resto de recursos: Busca en caché primero; si no está, va a la red
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {
