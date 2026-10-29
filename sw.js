@@ -1,12 +1,12 @@
 const CACHE_NAME = 'supermart-v2-8-0';
 
+// Solo recursos locales directos para garantizar instalación rápida sin fallos externos
 const STATIC_ASSETS = [
   './',
   './index.html',
   './manifest.json',
   './icon-192.png',
-  './icon-512.png',
-  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'
+  './icon-512.png'
 ];
 
 self.addEventListener('install', (event) => {
@@ -40,7 +40,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Páginas (index.html): primero internet, si no hay conexión usa la copia guardada
+  // Navegación (index.html): Intenta red primero para traer siempre lo último, si no hay internet usa caché
   if (event.request.mode === 'navigate') {
     event.respondWith(
       fetch(event.request)
@@ -60,14 +60,14 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Resto de archivos: primero la copia guardada (rápido), si no existe, internet
+  // Resto de recursos: Busca en caché primero, si no está va a la red
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {
         return cachedResponse;
       }
       return fetch(event.request).then((networkResponse) => {
-        if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
+        if (!networkResponse || networkResponse.status !== 200) {
           return networkResponse;
         }
         const responseToCache = networkResponse.clone();
