@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SuperMart_v 2.8.0</title>
+    <title>SuperMart_v 2.8.1</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <!-- PWA -->
@@ -483,6 +483,35 @@
 </script>
 
 <script>
+    // --- AUTO-LIMPIEZA FORZADA DE CACHÉ VIEJA Y URL #CARRO (v2.8.1) ---
+    (function() {
+        if (window.location.hash) {
+            history.replaceState(null, null, window.location.pathname + window.location.search);
+        }
+
+        const VER_KEY = 'supermart_version_instalada';
+        const VERSION_ACTUAL = '2.8.1_fix';
+
+        if (localStorage.getItem(VER_KEY) !== VERSION_ACTUAL) {
+            if ('caches' in window) {
+                caches.keys().then(function(names) {
+                    for (let name of names) {
+                        caches.delete(name);
+                    }
+                });
+            }
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                    for (let registration of registrations) {
+                        registration.unregister();
+                    }
+                });
+            }
+            localStorage.setItem(VER_KEY, VERSION_ACTUAL);
+            window.location.reload(true);
+        }
+    })();
+
     const diccionarioSmartCategorias = {
         'Fruta': ['manzana', 'platano', 'banana', 'naranja', 'pera', 'fresa', 'limon', 'uva', 'kiwi', 'mora', 'arandano', 'cereza', 'sandia', 'melon', 'melocoton', 'albaricoque', 'ciruela', 'mandarina', 'aguacate', 'pina', 'mango'],
         'Verdura': ['tomate', 'lechuga', 'zanahoria', 'cebolla', 'ajo', 'patata', 'pimiento', 'pepino', 'calabacin', 'berenjena', 'espinaca', 'brocoli', 'coliflor', 'judia', 'puerro', 'champinon', 'seta', 'calabaza'],
