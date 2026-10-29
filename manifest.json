@@ -37,14 +37,5 @@
       "type": "image/png",
       "purpose": "maskable"
     }
-  ],
-  "shortcuts": [
-    {
-      "name": "Ver Carro",
-      "short_name": "Carro",
-      "description": "Abrir directamente el carro de la compra",
-      "url": "./index.html#carro",
-      "icons": [{ "src": "./icon-192.png", "sizes": "192x192" }]
-    }
   ]
 }
