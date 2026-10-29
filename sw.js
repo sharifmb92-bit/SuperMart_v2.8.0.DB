@@ -1,4 +1,4 @@
-const CACHE_NAME = 'supermart-v2-8-0-fix';
+const CACHE_NAME = 'supermart-v2-8-1';
 
 // Solo recursos locales directos para garantizar una instalación rápida sin fallos externos
 const STATIC_ASSETS = [
